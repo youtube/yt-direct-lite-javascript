@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <title>YouTube Direct Lite</title>
+    <link type="text/css" rel="stylesheet" href="css/index.css" />
+    <script type="text/javascript" src="js/third-party/lscache.js"></script>
+    <script type="text/javascript" src="js/third-party/parseUri.js"></script>
+    <script type="text/javascript" src="js/third-party/require-jquery.js" data-main="js/main"></script>
+  </head>
+  <body>
+    <div id="header" class="hidden login-required">
+      <img id="profile-picture"/>
+      <span id="display-name"></span>
+      <a id="logout" data-state="logout">Logout</a>
+    </div>
+    <div id="login-panel" class="hidden panel">
+      <div>Please <a id="login">login</a> to submit your video.</div>
+    </div>
+    <ul id="tabs" class="hidden login-required">
+      <li data-state="existing">My YouTube Videos</li>
+      <li data-state="upload">Upload</li>
+      <li data-state="webcam">Webcam</li>
+    </ul>
+    <div id="message" class="hidden"></div>
+    <div id="existing-panel" class="hidden panel">
+      <ul id="existing-videos"></ul>
+    </div>
+    <div id="upload-panel" class="hidden panel">
+      <form id="upload-form" enctype="multipart/form-data" method="POST">
+        <div id="title-container" class="hidden">
+          <label for="title">Title</label>
+          <input id="title" type="text" class="wide" maxlength="90" required/>
+        </div>
+        <div id="description-container" class="hidden">
+          <label for="description">Description</label>
+          <textarea id="description" type="text" class="wide" maxlength="1000" required></textarea>
+        </div>
+        <div id="category-container" class="hidden">
+          <label for="category">Category</label>
+          <select id="category" class="wide"></select>
+        </div>
+        <div>
+          <label for="file">Video File</label>
+          <input id="file" name="file" type="file" required/>
+        </div>
+        <div>
+          <input id="upload" type="button" value="Upload" disabled/>
+        </div>
+        <div id="tos">
+          By clicking 'upload,' you certify that you own all rights to the content or that you are
+          authorized by the owner to make the content publicly available on YouTube, and that it
+          otherwise complies with the YouTube Terms of Service located at
+          <a href="http://www.youtube.com/t/terms" target="_blank">http://www.youtube.com/t/terms</a>.
+        </div>
+      </form>
+    </div>
+    <div id="postupload-panel" class="hidden panel">
+      <div id="upload-success" class="hidden">
+        Your <a id="youtube-link" target="_blank">video</a> was successfully submitted.
+      </div>
+    </div>
+    <div id="webcam-panel" class="hidden panel">
+      <div id="webcam-widget"></div>
+    </div>
+  </body>
+</html>

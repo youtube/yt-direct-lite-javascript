@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <title>YouTube Direct Lite Admin</title>
+    <link type="text/css" rel="stylesheet" href="css/index.css" />
+    <script type="text/javascript" src="js/third-party/lscache.js"></script>
+    <script type="text/javascript" src="js/third-party/parseUri.js"></script>
+    <script type="text/javascript" src="js/third-party/require-jquery.js" data-main="js/admin-main"></script>
+  </head>
+  <body>
+    <div id="header" class="hidden login-required">
+      <img id="profile-picture"/>
+      <span id="display-name"></span>
+      <a id="logout" data-state="logout">Logout</a>
+    </div>
+    <div id="login-panel" class="hidden panel">
+      <div>Please <a id="login">login</a> to submit your video.</div>
+    </div>
+    <ul id="tabs" class="hidden">
+      <li data-state="embed-codes">Embed Codes</li>
+      <li data-state="pending">Pending</li>
+      <li data-state="approved">Approved</li>
+      <li data-state="rejected">Rejected</li>
+    </ul>
+    <div id="message" class="hidden"></div>
+    <div id="admin-panel" class="hidden panel">
+      <div>Moderate submissions by playlist.</div>
+      <ul id="playlists"></ul>
+    </div>
+    <div id="embed-codes-panel" class="hidden panel">
+      <div>
+        To add a submission widget associated with this playlist, use the following HTML code:
+        <div><code id="widget-embed-code"></code></div>
+      </div>
+      <div>
+        To display approved videos associated with this playlist, use the following HTML code:
+        <div><code id="playlist-embed-code"></code></div>
+      </div>
+      <div>
+        You can use <a id="rss-feed">this RSS feed</a> to be notified when new videos are submitted.
+      </div>
+    </div>
+    <div id="moderation-message" class="hidden"></div>
+    <div id="pending-panel" class="hidden panel">
+      <ul id="pending-videos" class="video-list"></ul>
+    </div>
+    <div id="approved-panel" class="hidden panel">
+      <ul id="approved-videos" class="video-list"></ul>
+    </div>
+    <div id="rejected-panel" class="hidden panel">
+      <ul id="rejected-videos" class="video-list"></ul>
+    </div>
+    <div id="switch" class="hidden">
+      <a data-state="admin">Switch Playlist</a>
+    </div>
+  </body>
+</html>

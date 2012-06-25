@@ -1,0 +1,205 @@
+body {
+  margin: 0;
+  font-family: Helvetica, sans-serif;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+a {
+  cursor: pointer;
+  color: blue;
+  text-decoration: none;
+}
+
+.hidden {
+  display: none;
+}
+
+#header {
+  height: 28px;
+}
+
+#profile-picture {
+  width: 28px;
+  height: 28px;
+}
+
+#display-name {
+  position: absolute;
+  top: 6px;
+  left: 34px;
+}
+
+#logout {
+  position: absolute;
+  top: 6px;
+  right: 2px;
+}
+
+#message {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  background-color: rgba(249, 237, 190, 0.9);
+  padding: 5px;
+  width: 200px;
+  margin-left: -100px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#tabs {
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #2d2d2d;
+  border-top: 1px solid #2d2d2d;
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#tabs > li {
+  cursor: pointer;
+  display: inline;
+  margin-left: -4px;
+  border-right: 1px solid #2d2d2d;
+  padding: 10px 10px 10px 8px;
+}
+
+#tabs > li:first-child {
+  margin-left: 0;
+}
+
+#tabs > li:hover {
+  background-color: #d9d9d9;
+}
+
+#tabs > li.selected {
+  background-color: #d9d9d9;
+}
+
+.panel {
+  margin: 5px;
+}
+
+label {
+  display: block;
+}
+
+form > div {
+  margin-bottom: 10px;
+}
+
+.wide {
+  width: 300px;
+}
+
+#tos {
+  font-size: 11px;
+  color: #a7a7a7;
+}
+
+#tos > a {
+  color: #a7a7a7;
+}
+
+#existing-videos {
+  margin-top: 10px;
+}
+
+.video-container {
+  background-color: #eeeeee;
+  border: 1px solid #dddddd;
+  margin: 5px;
+  padding: 10px;
+  width: 356px;
+  height: 230px;
+  position: relative;
+}
+
+.video-title {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.video-duration {
+  margin-left: 5px;
+  font-size: 11px;
+}
+
+.video-uploaded {
+  color: #777777;
+  font-size: 11px;
+}
+
+.thumbnail-image {
+  cursor: pointer;
+  position: absolute;
+  top: 7px;
+  clip: rect(34px 356px 233px 0);
+  width: 356px;
+  height: 267px;
+}
+
+.play-overlay {
+  cursor: pointer;
+  display: none;
+  position: absolute;
+  top: 89px;
+  left: 131px;
+}
+
+.video-container input:first-child {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.video-container input {
+  position: absolute;
+  top: 5px;
+  right: 75px;
+}
+
+#description {
+  height: 60px;
+}
+
+#webcam-widget {
+  width: 400px;
+  height: 287px;
+}
+
+#playlists {
+  width: 400px;
+  margin-left: 25px;
+}
+
+#playlists li {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px #dddddd solid;
+}
+
+#playlists li:first-child {
+  border-top: 1px #dddddd solid;
+}
+
+#playlists li:hover {
+  background-color: #eeeeee;
+}
+
+#embed-codes-panel > div {
+  margin-bottom: 15px;
+}
+
+#switch {
+  margin-left: 5px;
+  margin-top: 15px;
+}
+
+#moderation-message {
+  margin: 5px;
+}

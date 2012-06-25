@@ -1,0 +1,53 @@
+/*
+  Copyright 2012 Google Inc. All Rights Reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+define(['jquery', '../utils', '../constants', '../globals'], function($, utils, constants, globals) {
+  return {
+    init: function() {
+      $('#create-playlist').click(function() {
+        $(this).attr('disabled', true);
+        var playlistName = $('#new-playlist-name').val();
+        if (playlistName) {
+          utils.addPlaylist(playlistName, false, function(playlistId) {
+            utils.redirect('embed-codes', playlistId);
+          });
+        } else {
+          utils.showMessage('Please enter a name for the playlist.');
+        }
+
+        $(this).removeAttr('disabled');
+      });
+    },
+
+    display: function() {
+      $('#tabs').hide();
+      $('#switch').hide();
+      $('#moderation-message').hide();
+
+      utils.getPlaylists(function(entries) {
+        var lis = [];
+        $.each(entries, function(i, entry) {
+          lis.push(utils.format(constants.PLAYLIST_LI_TEMPLATE, {
+            playlistId: entry['yt$playlistId']['$t'],
+            playlistName: entry['title']['$t']
+          }));
+        });
+        $('#playlists').html(lis.sort().join(''));
+        $('#playlists').append('<li><div id="create-playlist-inputs"><input id="new-playlist-name" type="text" size="40" placeholder="Playlist Name"/><input id="create-playlist" type="button" value="Create New Playlist"/></div></li>');
+      });
+    }
+  };
+});
