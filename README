@@ -1,2 +1,13 @@
 Please visit http://code.google.com/p/youtube-direct-lite/ for the most up to date information
 on deploying and using YouTube Direct Lite.
+
+If you are using a local deployment, it is recommended that you concatenate and minify all the
+JavaScript source files for performance reasons. You can do this by running
+
+  node r.js -o app.build.js
+
+from within this top-level directory; it will output a static-min/ directory containing the
+optimized JavaScript, which you can then serve. More information about this process, including
+the dependencies you need to install to run those commands, can be found at
+
+  http://requirejs.org/docs/optimization.html
