@@ -14,7 +14,7 @@
   limitations under the License.
 */
 
-define(['jquery', '../utils', '../constants', '../globals'], function($, utils, constants, globals) {
+define(['jquery', '../utils', '../constants'], function($, utils, constants) {
   return {
     init: function() {
       $('#create-playlist').click(function() {
