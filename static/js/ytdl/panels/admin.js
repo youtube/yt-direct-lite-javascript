@@ -15,21 +15,9 @@
 */
 
 define(['jquery', '../utils', '../constants'], function($, utils, constants) {
-  return {
+  var admin = {
     init: function() {
-      $('#create-playlist').click(function() {
-        $(this).attr('disabled', true);
-        var playlistName = $('#new-playlist-name').val();
-        if (playlistName) {
-          utils.addPlaylist(playlistName, false, function(playlistId) {
-            utils.redirect('embed-codes', playlistId);
-          });
-        } else {
-          utils.showMessage('Please enter a name for the playlist.');
-        }
-
-        $(this).removeAttr('disabled');
-      });
+      admin.attachClickHandler();
     },
 
     display: function() {
@@ -47,7 +35,29 @@ define(['jquery', '../utils', '../constants'], function($, utils, constants) {
         });
         $('#playlists').html(lis.sort().join(''));
         $('#playlists').append('<li><div id="create-playlist-inputs"><input id="new-playlist-name" type="text" size="40" placeholder="Playlist Name"/><input id="create-playlist" type="button" value="Create New Playlist"/></div></li>');
+
+        admin.attachClickHandler();
+      });
+    },
+
+    // TODO: This is a bit of a hack to work around the fact that the #create-playlist button is
+    // recreated each time display() is called. There's obviously better ways of dealing with that.
+    attachClickHandler: function() {
+      $('#create-playlist').click(function() {
+        $(this).attr('disabled', true);
+        var playlistName = $('#new-playlist-name').val();
+        if (playlistName) {
+          utils.addPlaylist(playlistName, false, function(playlistId) {
+            utils.redirect('embed-codes', playlistId);
+          });
+        } else {
+          utils.showMessage('Please enter a name for the playlist.');
+        }
+
+        $(this).removeAttr('disabled');
       });
     }
   };
+
+  return admin;
 });
