@@ -45,8 +45,8 @@ a {
   left: 50%;
   background-color: rgba(249, 237, 190, 0.9);
   padding: 5px;
-  width: 200px;
-  margin-left: -100px;
+  width: 250px;
+  margin-left: -125px;
   text-align: center;
   cursor: pointer;
 }

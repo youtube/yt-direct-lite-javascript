@@ -60,7 +60,7 @@ define(['jquery', './utils', './constants', './config', './globals'], function($
               if (jqXHR.responseText && jqXHR.responseText.indexOf('NoLinkedYouTubeAccount') == -1) {
                 utils.showMessage('Unable to get display name: ' + jqXHR.responseText);
               } else {
-                utils.showMessage('Your account cannot upload videos. Please visit https://www.youtube.com/signin?next=/create_channel to add a YouTube channel to your account, and try again.');
+                utils.showHtmlMessage('Your account cannot upload videos. Please visit <a target="_blank" href="https://www.youtube.com/signin?next=/create_channel">https://www.youtube.com/signin?next=/create_channel</a> to add a YouTube channel to your account, and try again.');
               }
             }
           });
