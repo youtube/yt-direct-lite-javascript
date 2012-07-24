@@ -272,7 +272,7 @@ define([
         thumbnailUrl: utils.getThumbnailUrlFromEntry(entry, 'hqdefault'),
         uploadedDate: new Date(entry['published']['$t']).toDateString(),
         duration: utils.formatDuration(entry['media$group']['yt$duration']['seconds']),
-        uploader: entry['author'][0]['name']['$t'],
+        uploader: entry['media$group']['media$credit'][0]['yt$display'],
         videoId: entry['media$group']['yt$videoid']['$t'],
         title: entry['title']['$t']
       };
