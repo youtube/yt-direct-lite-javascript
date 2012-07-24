@@ -109,6 +109,10 @@ form > div {
   margin-top: 10px;
 }
 
+.admin-video-list > li {
+  float: left;
+}
+
 .video-container {
   background-color: #eeeeee;
   border: 1px solid #dddddd;
@@ -196,6 +200,7 @@ form > div {
 }
 
 #switch {
+  clear: left;
   margin-left: 5px;
   margin-top: 15px;
 }
