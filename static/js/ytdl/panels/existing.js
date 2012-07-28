@@ -41,10 +41,14 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
             data: xmlBody,
             success: function(responseXml) {
               utils.showMessage('Your submission was received.');
+
+              window._gaq.push(['_trackEvent', 'Submission', 'Existing', 'Success']);
             },
             error: function(jqXHR) {
               utils.showMessage('Submission failed: ' + jqXHR.responseText);
               $(this).removeAttr('disabled');
+
+              window._gaq.push(['_trackEvent', 'Submission', 'Existing', 'Error']);
             }
           });
         }

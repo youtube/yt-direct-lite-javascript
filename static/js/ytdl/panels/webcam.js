@@ -40,6 +40,13 @@ define(['jquery', '../utils', '../constants', '../globals', '../config'], functi
           },
           onUploadSuccess: function(event) {
             utils.showMessage('Your webcam submission was received.');
+
+            window._gaq.push(['_trackEvent', 'Submission', 'Webcam', 'Success']);
+          },
+          onStateChange: function(event) {
+            if (event.data.state == YT.UploadWidgetState.ERROR) {
+              window._gaq.push(['_trackEvent', 'Submission', 'Webcam', 'Error']);
+            }
           }
         }
       });

@@ -22,9 +22,13 @@ define(['jquery', '../utils', '../globals'], function($, utils, globals) {
         var youtubeUrl = utils.format('http://youtu.be/{0}', globals.parsedUrl.queryKey.id);
         $('#youtube-link').attr('href', youtubeUrl);
         $('#upload-success').show();
+
+        window._gaq.push(['_trackEvent', 'Submission', 'Upload', 'Success']);
       } else {
         $('#upload-success').hide();
         utils.showMessage(utils.format('Your video could not be submitted. (Error: {0})', globals.parsedUrl.queryKey.code));
+
+        window._gaq.push(['_trackEvent', 'Submission', 'Upload', 'Error']);
       }
     }
   };
