@@ -36,10 +36,10 @@ define([
 ], function($, constants, globals, utils, config, player) {
   return {
     onLoad: function(defaultTab) {
+      window._gaq = window._gaq || [];
+
       if (config.GOOGLE_ANALYTICS_ID) {
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', config.GOOGLE_ANALYTICS_ID]);
-        _gaq.push(['_trackPageview']);
+        window._gaq.push(['_setAccount', config.GOOGLE_ANALYTICS_ID]);
 
         var analyticsScriptSrc = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         $.getScript(analyticsScriptSrc);
@@ -120,6 +120,8 @@ define([
         $(utils.format('#{0}-panel', state)).show();
         $('#tabs > li').removeClass('selected');
         $(utils.format('#tabs > li[data-state={0}]', state)).addClass('selected');
+
+        window._gaq.push(['_trackPageview', utils.format('{0}#state={1}', location.pathname, state)]);
       });
     }
   };
