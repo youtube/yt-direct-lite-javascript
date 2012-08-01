@@ -265,6 +265,8 @@ define([
           utils.showMessage(utils.format('Could not create playlist "{0}": {1}', name, jqXHR.responseText));
         }
       });
+
+      window._gaq.push(['_trackEvent', 'Admin', 'Create Playlist']);
     },
 
     getMetadataFromEntry: function(entry) {

@@ -24,6 +24,8 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
           button.attr('disabled', true);
           utils.addVideoToPlaylist(globals.hashParams.playlist, button.attr('data-video-id'));
           utils.removeVideoFromPlaylist(button.attr('data-edit-url'));
+
+          window._gaq.push(['_trackEvent', 'Admin', 'Approve']);
         }
       }, '#rejected-panel input.approve');
     },

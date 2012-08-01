@@ -22,6 +22,8 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
         click: function() {
           $(this).attr('disabled', true);
           utils.addVideoToPlaylist(globals.hashParams.playlist, $(this).attr('data-video-id'));
+
+          window._gaq.push(['_trackEvent', 'Admin', 'Approve']);
         }
       }, '#pending-panel input.approve');
 
@@ -29,6 +31,8 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
         click: function() {
           $(this).attr('disabled', true);
           utils.addVideoToPlaylist(globals.rejectedPlaylistId, $(this).attr('data-video-id'));
+
+          window._gaq.push(['_trackEvent', 'Admin', 'Reject']);
         }
       }, '#pending-panel input.reject');
     },

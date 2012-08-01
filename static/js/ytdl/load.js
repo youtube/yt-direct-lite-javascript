@@ -52,6 +52,7 @@ define([
 
       if (!$.support.cors) {
         utils.showHtmlMessage('Unfortunately, your browser is <a target="_blank" href="http://caniuse.com/cors">not supported</a>. Please try visiting this page using a recent version of Firefox, Safari, Opera, or Chrome.');
+        window._gaq.push(['_trackPageview']);
         return;
       }
 
