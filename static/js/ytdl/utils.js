@@ -69,6 +69,29 @@ define([
       $('#message').text();
     },
 
+    animateModeration: function(target, destination) {
+      var currentPosition = target.position();
+      var destinationPosition = destination.position();
+      var originalHeight = target.height();
+      var originalWidth = target.width();
+
+      target.css({
+        position: 'absolute',
+        left: currentPosition.left,
+        top: currentPosition.top
+      });
+
+      target.animate({
+        opacity: 0.5,
+        left: destinationPosition.left,
+        top: destinationPosition.top,
+        height: originalHeight * 0.1,
+        width: originalWidth * 0.1
+      }, 'slow', function() {
+        target.hide();
+      });
+    },
+
     updateHashParams: function() {
       globals.hashParams = $.parseParams(decodeURIComponent(window.location.hash.replace('#', '')));
     },

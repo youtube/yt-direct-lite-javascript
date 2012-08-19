@@ -24,6 +24,8 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
           utils.addVideoToPlaylist(globals.hashParams.playlist, $(this).attr('data-video-id'));
 
           window._gaq.push(['_trackEvent', 'Admin', 'Approve']);
+
+          utils.animateModeration($(this).closest('li'), $('li[data-state=approved]'));
         }
       }, '#pending-panel input.approve');
 
@@ -33,6 +35,8 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
           utils.addVideoToPlaylist(globals.rejectedPlaylistId, $(this).attr('data-video-id'));
 
           window._gaq.push(['_trackEvent', 'Admin', 'Reject']);
+
+          utils.animateModeration($(this).closest('li'), $('li[data-state=rejected]'));
         }
       }, '#pending-panel input.reject');
     },
