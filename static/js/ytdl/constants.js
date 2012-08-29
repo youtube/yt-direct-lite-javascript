@@ -28,7 +28,7 @@ define({
   STATE_CACHE_MINUTES: 15,
   KEYWORD_UPDATE_XML_TEMPLATE: '<?xml version="1.0"?> <entry xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:yt="http://gdata.youtube.com/schemas/2007" xmlns:gd="http://schemas.google.com/g/2005" gd:fields="media:group/media:keywords"> <media:group> <media:keywords>{0}</media:keywords> </media:group> </entry>',
   WIDGET_EMBED_CODE: '<iframe width="420" height="500" src="{0}#playlist={1}"></iframe>',
-  PLAYLIST_EMBED_CODE: '<iframe width="640" height="360" src="//www.youtube.com/embed/?listType=playlist&list=PL{0}&showinfo=1" frameborder="0" allowfullscreen></iframe>',
+  PLAYLIST_EMBED_CODE: '<iframe width="640" height="360" src="//www.youtube.com/embed/?listType=playlist&list={0}&showinfo=1" frameborder="0" allowfullscreen></iframe>',
   SUBMISSION_RSS_FEED: 'https://gdata.youtube.com/feeds/api/videos?v=2&alt=rss&orderby=published&category=%7Bhttp%3A%2F%2Fgdata.youtube.com%2Fschemas%2F2007%2Fkeywords.cat%7D{0}',
   DEFAULT_KEYWORD: 'ytdl',
   WEBCAM_VIDEO_TITLE: 'Webcam Submission',
