@@ -3,5 +3,8 @@
   baseUrl: 'js',
   dir: 'static-min',
   paths: {jquery: 'empty:'},
-  modules: [{name: 'main'}]
+  modules: [
+    {name: 'main'},
+    {name: 'admin-main'}
+  ]
 })
