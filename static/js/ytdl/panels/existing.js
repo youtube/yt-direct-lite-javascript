@@ -23,7 +23,7 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
           $(this).attr('disabled', true);
 
           var videoId = $(this).data('video-id');
-          var existingKeywords = $(this).data('existing-keywords');
+          var existingKeywords = $(this).data('existing-keywords').toString();
           var keywords = existingKeywords.split('\s*,\s*');
           keywords.push(constants.DEFAULT_KEYWORD);
           keywords.push(utils.generateKeywordFromPlaylistId(globals.hashParams.playlist));
