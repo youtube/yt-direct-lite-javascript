@@ -102,7 +102,12 @@ define([
       if (playlistId.indexOf('PL') == 0) {
         playlistId = playlistId.substring(2);
       }
-      return utils.format('{0}{1}', constants.DEFAULT_KEYWORD, playlistId);
+
+      var keyword = utils.format('{0}{1}', constants.DEFAULT_KEYWORD, playlistId);
+      if (keyword.length > constants.MAX_KEYWORD_LENGTH) {
+        keyword = keyword.substring(0, constants.MAX_KEYWORD_LENGTH);
+      }
+      return keyword;
     },
 
     formatDuration: function(durationInSeconds) {

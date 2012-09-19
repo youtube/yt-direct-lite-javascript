@@ -26,6 +26,7 @@ define({
   PAGE_SIZE: 50,
   FEED_CACHE_MINUTES: 5,
   STATE_CACHE_MINUTES: 15,
+  MAX_KEYWORD_LENGTH: 30,
   KEYWORD_UPDATE_XML_TEMPLATE: '<?xml version="1.0"?> <entry xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:yt="http://gdata.youtube.com/schemas/2007" xmlns:gd="http://schemas.google.com/g/2005" gd:fields="media:group/media:keywords"> <media:group> <media:keywords>{0}</media:keywords> </media:group> </entry>',
   WIDGET_EMBED_CODE: '<iframe width="420" height="500" src="{0}#playlist={1}"></iframe>',
   PLAYLIST_EMBED_CODE: '<iframe width="640" height="360" src="//www.youtube.com/embed/?listType=playlist&list={0}&showinfo=1" frameborder="0" allowfullscreen></iframe>',
