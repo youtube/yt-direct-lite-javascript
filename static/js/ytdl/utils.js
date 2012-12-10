@@ -194,11 +194,13 @@ define([
     getThumbnailUrlFromEntry: function(entry, thumbnailName) {
       var thumbnailUrl = constants.NO_THUMBNAIL_URL;
 
-      $.each(entry['media$group']['media$thumbnail'], function(i, thumbnailEntry) {
-        if (thumbnailEntry['yt$name'] == thumbnailName) {
-          thumbnailUrl = thumbnailEntry['url'];
-        }
-      });
+      if ('media$group' in entry && 'media$thumbnail' in entry['media$group']) {
+        $.each(entry['media$group']['media$thumbnail'], function(i, thumbnailEntry) {
+          if (thumbnailEntry['yt$name'] == thumbnailName) {
+            thumbnailUrl = thumbnailEntry['url'];
+          }
+        });
+      }
 
       return thumbnailUrl;
     },
@@ -298,10 +300,15 @@ define([
     },
 
     getMetadataFromEntry: function(entry) {
+      var durationInSeconds = 0;
+      if ('yt$duration' in entry['media$group']) {
+        durationInSeconds = entry['media$group']['yt$duration']['seconds'];
+      }
+
       return {
         thumbnailUrl: utils.getThumbnailUrlFromEntry(entry, 'hqdefault'),
         uploadedDate: new Date(entry['published']['$t']).toDateString(),
-        duration: utils.formatDuration(entry['media$group']['yt$duration']['seconds']),
+        duration: utils.formatDuration(durationInSeconds),
         uploader: entry['media$group']['media$credit'][0]['yt$display'],
         videoId: entry['media$group']['yt$videoid']['$t'],
         title: entry['title']['$t']
