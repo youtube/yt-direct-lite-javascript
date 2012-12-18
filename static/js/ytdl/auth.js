@@ -17,7 +17,7 @@
 define(['jquery', './utils', './constants', './config', './globals'], function($, utils, constants, config, globals) {
   var auth = {
     initAuth: function() {
-      window.onAuthReady = function() {
+      window[constants.CLIENT_LIB_LOAD_CALLBACK] = function() {
         gapi.auth.init(function() {
           if (lscache.get(constants.DISPLAY_NAME_CACHE_KEY)) {
             window.setTimeout(function() {
@@ -33,7 +33,7 @@ define(['jquery', './utils', './constants', './config', './globals'], function($
         });
       };
 
-      $.getScript('https://apis.google.com/js/auth.js?onload=onAuthReady');
+      $.getScript(constants.CLIENT_LIB_URL + constants.CLIENT_LIB_LOAD_CALLBACK);
     },
 
     handleAuthResult: function(authResult) {
