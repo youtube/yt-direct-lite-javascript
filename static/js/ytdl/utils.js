@@ -218,24 +218,79 @@ define([
 
       if ('error' in response && 'data' in response.error && response.error.data.length > 0) {
         var error = response.error.data[0];
-        errorString = utils.format('{0}: {1} ({2})', error.reason, error.message, error.location);
+        errorString = utils.format('{0}: {1}', error.reason, error.message);
+        if (error.location) {
+          errorString += utils.format(' ({0})', error.location);
+        }
       }
 
       return errorString;
     },
 
-    isUnlisted: function(entry) {
-      var isUnlisted = false;
+    getAllItems: function(service, params, callback, items) {
+      if (!items) {
+        items = [];
+      }
+      params['maxResults'] = constants.PAGE_SIZE;
 
-      if ('yt$accessControl' in entry) {
-        $.each(entry['yt$accessControl'], function() {
-          if (this.action == 'list') {
-            isUnlisted = this.permission == 'denied';
-          }
-        });
+      var request = gapi.client.request({
+        path: utils.format('/{0}/{1}/{2}', constants.YOUTUBE_API_SERVICE_NAME, constants.YOUTUBE_API_VERSION, service),
+        method: 'GET',
+        params: params
+      });
+      request.execute(function(response) {
+        if (utils.itemsInResponse(response)) {
+          items = items.concat(response.items);
+        } else if ('error' in response) {
+          utils.showMessage('Request failed. ' + utils.getErrorResponseString(response));
+        }
+
+        if ('nextPageToken' in response && items.length < constants.MAX_ITEMS_TO_RETRIEVE) {
+          params['pageToken'] = response.nextPageToken;
+          utils.getAllItems(service, params, callback, items);
+        } else {
+          callback(items);
+        }
+      });
+    },
+
+    getInfoForVideoIds: function(videoIds, callback, videos) {
+      if (!videos) {
+        videos = [];
       }
 
-      return isUnlisted;
+      var pageOfVideoIds = videoIds.splice(0, constants.PAGE_SIZE);
+      if (pageOfVideoIds.length > 0) {
+        var request = gapi.client[constants.YOUTUBE_API_SERVICE_NAME].videos.list({
+          id: pageOfVideoIds.join(','),
+          part: 'snippet,contentDetails,status'
+        });
+        request.execute(function(response) {
+          if (utils.itemsInResponse(response)) {
+            videos = videos.concat(response.items);
+            utils.getInfoForVideoIds(videoIds, callback, videos);
+          } else {
+            utils.showMessage('Unable to retrieve info about videos. ' + utils.getErrorResponseString(response));
+            callback(videos);
+          }
+        });
+      } else {
+        callback(videos);
+      }
+    },
+
+    formatPeriodOfTime: function(duration) {
+      var matches = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(\d+)S/);
+
+      var hours = parseInt(matches[1]) || 0;
+      var minutes = parseInt(matches[2]) || 0;
+      minutes += hours * 60;
+      var seconds = parseInt(matches[3]) || 0;
+      if (seconds < 10) {
+        seconds = '0' + seconds;
+      }
+
+      return utils.format('{0}:{1}', minutes, seconds);
     },
 
     getEditLinkUrlFromEntry: function(entry) {

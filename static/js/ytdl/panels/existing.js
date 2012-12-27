@@ -54,28 +54,34 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
         }
       }, '.submit-video-button');
 
-      utils.getFeed({
-        url: utils.format('{0}/feeds/api/users/default/uploads', constants.GDATA_SERVER),
-        cacheMinutes: constants.FEED_CACHE_MINUTES,
-        callback: function(entries) {
-          $.each(entries, function(i, entry) {
-            if (entry['app$control'] != null) {
+      utils.getAllItems('playlistItems', {
+        part: 'snippet',
+        playlistId: lscache.get(constants.UPLOADS_LIST_ID_CACHE_KEY)
+      }, function(items) {
+        var videoIds = $.map(items, function(item) {
+          return item.snippet.resourceId.videoId;
+        });
+        utils.getInfoForVideoIds(videoIds, function(videos) {
+          videos.sort(function(a, b) {
+            return a.snippet.publishedAt > b.snippet.publishedAt ? -1 : 1;
+          });
+
+          $.each(videos, function() {
+            if (this.status.uploadStatus != 'processed' || this.status.privacyStatus != 'public') {
               return true;
             }
 
-            if (utils.isUnlisted(entry)) {
-              return true;
-            }
+            var thumbnailUrl = this.snippet.thumbnails.high.url;
+            var uploadedDate = new Date(this.snippet.publishedAt).toDateString();
+            var duration = utils.formatPeriodOfTime(this.contentDetails.duration);
+            var videoId = this.id;
+            var title = this.snippet.title;
+            var tags = this.snippet.tags.join(',');
 
-            var thumbnailUrl = utils.getThumbnailUrlFromEntry(entry, 'hqdefault');
-            var uploadedDate = new Date(entry['published']['$t']).toDateString();
-            var duration = utils.formatDuration(entry['media$group']['yt$duration']['seconds']);
-            var videoId = entry['media$group']['yt$videoid']['$t'];
-
-            var videoLi = $(utils.format(constants.VIDEO_LI_TEMPLATE, '', videoId, entry['media$group']['media$keywords']['$t'], entry['title']['$t'], uploadedDate, duration, thumbnailUrl));
+            var videoLi = $(utils.format(constants.VIDEO_LI_TEMPLATE, '', videoId, tags, title, uploadedDate, duration, thumbnailUrl));
             videoLi.appendTo('#existing-videos');
           });
-        }
+        });
       });
     }
   };

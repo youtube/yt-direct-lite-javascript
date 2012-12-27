@@ -56,10 +56,11 @@ define(['jquery', './utils', './constants', './config', './globals'], function($
       } else {
         var request = gapi.client[constants.YOUTUBE_API_SERVICE_NAME].channels.list({
           mine: true,
-          part: 'snippet'
+          part: 'snippet,contentDetails'
         });
         request.execute(function(response) {
           if (utils.itemsInResponse(response)) {
+            lscache.set(constants.UPLOADS_LIST_ID_CACHE_KEY, response.items[0].contentDetails.relatedPlaylists.uploads);
             lscache.set(constants.DISPLAY_NAME_CACHE_KEY, response.items[0].snippet.title);
             lscache.set(constants.PROFILE_PICTURE_CACHE_KEY, response.items[0].snippet.thumbnails.default.url);
             utils.redirect(nextState);
