@@ -36,8 +36,8 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
             video.snippet.tags.push(keyword);
           }
 
-          delete video['contentDetails'];
-          delete video['status'];
+          delete video.contentDetails;
+          delete video.status;
 
           var request = gapi.client[constants.YOUTUBE_API_SERVICE_NAME].videos.update({
             part: 'snippet',
