@@ -218,7 +218,7 @@ define([
 
       if ('error' in response && 'data' in response.error && response.error.data.length > 0) {
         var error = response.error.data[0];
-        errorString = utils.format('{0}: {1}', error.reason, error.message);
+        errorString = utils.format('{0}: {1}', error.reason || 'Error', error.message);
         if (error.location) {
           errorString += utils.format(' ({0})', error.location);
         }
