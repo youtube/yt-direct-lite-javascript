@@ -25,7 +25,7 @@ define(['jquery', './utils', './constants', './config', './globals'], function($
                 client_id: config.OAUTH2_CLIENT_ID,
                 scope: [ constants.OAUTH2_SCOPE ],
                 immediate: true
-              }, auth.handleAuthResult);
+              }, auth.onAuthResult);
             }, 1);
           } else {
             utils.redirect('login');
@@ -36,38 +36,37 @@ define(['jquery', './utils', './constants', './config', './globals'], function($
       $.getScript(constants.CLIENT_LIB_URL + constants.CLIENT_LIB_LOAD_CALLBACK);
     },
 
-    handleAuthResult: function(authResult) {
+    onAuthResult: function(authResult) {
       if (authResult) {
-        var nextState = globals.hashParams.state || '';
-        if (nextState == 'login') {
-          nextState = '';
-        }
-
-        if (lscache.get(constants.DISPLAY_NAME_CACHE_KEY)) {
-          utils.redirect(nextState);
-        } else {
-          $.ajax({
-            dataType: 'json',
-            type: 'GET',
-            url: utils.format('{0}/feeds/api/users/default?alt=json', constants.GDATA_SERVER),
-            headers: utils.generateYouTubeApiHeaders(),
-            success: function(responseJson) {
-              lscache.set(constants.DISPLAY_NAME_CACHE_KEY, responseJson['entry']['yt$username']['display']);
-              lscache.set(constants.PROFILE_PICTURE_CACHE_KEY, responseJson['entry']['media$thumbnail']['url']);
-              utils.redirect(nextState);
-            },
-            error: function(jqXHR) {
-              if (jqXHR.responseText && jqXHR.responseText.indexOf('NoLinkedYouTubeAccount') == -1) {
-                utils.showMessage('Unable to get display name: ' + jqXHR.responseText);
-              } else {
-                utils.showHtmlMessage('Your account cannot upload videos. Please visit <a target="_blank" href="https://www.youtube.com/signin?next=/create_channel">https://www.youtube.com/signin?next=/create_channel</a> to add a YouTube channel to your account, and try again.');
-              }
-            }
-          });
-        }
+        gapi.client.load(constants.YOUTUBE_API_SERVICE_NAME, constants.YOUTUBE_API_VERSION, auth.onYouTubeClientLoad);
       } else {
         lscache.flush();
         utils.redirect('login');
+      }
+    },
+
+    onYouTubeClientLoad: function() {
+      var nextState = globals.hashParams.state || '';
+      if (nextState == 'login') {
+        nextState = '';
+      }
+
+      if (lscache.get(constants.DISPLAY_NAME_CACHE_KEY)) {
+        utils.redirect(nextState);
+      } else {
+        var request = gapi.client[constants.YOUTUBE_API_SERVICE_NAME].channels.list({
+          mine: true,
+          part: 'snippet'
+        });
+        request.execute(function(response) {
+          if (utils.itemsInResponse(response)) {
+            lscache.set(constants.DISPLAY_NAME_CACHE_KEY, response.items[0].snippet.title);
+            lscache.set(constants.PROFILE_PICTURE_CACHE_KEY, response.items[0].snippet.thumbnails.default.url);
+            utils.redirect(nextState);
+          } else {
+            utils.showMessage('Unable to retrieve channel info. ' + utils.getErrorResponseString(response));
+          }
+        });
       }
     }
   };

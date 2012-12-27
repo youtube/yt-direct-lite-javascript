@@ -22,7 +22,7 @@ define(['jquery', '../auth', '../constants', '../config'], function($, auth, con
           client_id: config.OAUTH2_CLIENT_ID,
           scope: [ constants.OAUTH2_SCOPE ],
           immediate: false
-        }, auth.handleAuthResult);
+        }, auth.onAuthResult);
       });
     }
   };

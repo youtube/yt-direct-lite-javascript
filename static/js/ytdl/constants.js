@@ -25,6 +25,8 @@ define({
   GDATA_SERVER: 'https://gdata.youtube.com',
   CLIENT_LIB_LOAD_CALLBACK: 'onClientLibReady',
   CLIENT_LIB_URL: 'https://apis.google.com/js/client.js?onload=',
+  YOUTUBE_API_SERVICE_NAME: 'youtube',
+  YOUTUBE_API_VERSION: 'v3',
   PAGE_SIZE: 50,
   FEED_CACHE_MINUTES: 5,
   STATE_CACHE_MINUTES: 15,

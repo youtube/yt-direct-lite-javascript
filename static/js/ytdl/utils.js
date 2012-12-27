@@ -209,6 +209,21 @@ define([
       return utils.format('{0}://{1}{2}', globals.parsedUrl.protocol, globals.parsedUrl.authority, globals.parsedUrl.path);
     },
 
+    itemsInResponse: function(response) {
+      return ('items' in response && response.items.length > 0);
+    },
+
+    getErrorResponseString: function(response) {
+      var errorString = 'Unknown error.';
+
+      if ('error' in response && 'data' in response.error && response.error.data.length > 0) {
+        var error = response.error.data[0];
+        errorString = utils.format('{0}: {1} ({2})', error.reason, error.message, error.location);
+      }
+
+      return errorString;
+    },
+
     isUnlisted: function(entry) {
       var isUnlisted = false;
 
