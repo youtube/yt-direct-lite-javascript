@@ -21,34 +21,36 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
       $('#existing-panel').on({
         click: function() {
           $(this).attr('disabled', true);
+          var video = $(this).data('video');
 
-          var videoId = $(this).data('video-id');
-          var existingKeywords = $(this).data('existing-keywords').toString();
-          var keywords = existingKeywords.split('\s*,\s*');
-          keywords.push(constants.DEFAULT_KEYWORD);
-          keywords.push(utils.generateKeywordFromPlaylistId(globals.hashParams.playlist));
-          var keywordString = keywords.join(', ');
+          if (!('tags' in video.snippet)) {
+            video.snippet.tags = [];
+          }
 
-          var xmlBody = utils.format(constants.KEYWORD_UPDATE_XML_TEMPLATE, utils.escapeXmlEntities(keywordString));
+          if ($.inArray(constants.DEFAULT_KEYWORD, video.snippet.tags) == -1) {
+            video.snippet.tags.push(constants.DEFAULT_KEYWORD);
+          }
 
-          $.ajax({
-            dataType: 'xml',
-            type: 'PATCH',
-            url: utils.format('{0}/feeds/api/users/default/uploads/{1}', constants.GDATA_SERVER, videoId),
-            contentType: 'application/xml',
-            headers: utils.generateYouTubeApiHeaders(),
-            processData: false,
-            data: xmlBody,
-            success: function(responseXml) {
-              utils.showMessage('Your submission was received.');
+          var keyword = utils.generateKeywordFromPlaylistId(globals.hashParams.playlist);
+          if ($.inArray(keyword, video.snippet.tags) == -1) {
+            video.snippet.tags.push(keyword);
+          }
 
-              window._gaq.push(['_trackEvent', 'Submission', 'Existing', 'Success']);
-            },
-            error: function(jqXHR) {
-              utils.showMessage('Submission failed: ' + jqXHR.responseText);
+          delete video['contentDetails'];
+          delete video['status'];
+
+          var request = gapi.client[constants.YOUTUBE_API_SERVICE_NAME].videos.update({
+            part: 'snippet',
+            resource: video
+          });
+          request.execute(function(response) {
+            if ('error' in response) {
+              utils.showMessage('Submission failed. ' + utils.getErrorResponseString(response));
               $(this).removeAttr('disabled');
-
               window._gaq.push(['_trackEvent', 'Submission', 'Existing', 'Error']);
+            } else {
+              utils.showMessage('Your submission was received.');
+              window._gaq.push(['_trackEvent', 'Submission', 'Existing', 'Success']);
             }
           });
         }
@@ -71,14 +73,14 @@ define(['jquery', '../utils', '../constants', '../globals'], function($, utils, 
               return true;
             }
 
-            var thumbnailUrl = this.snippet.thumbnails.high.url;
-            var uploadedDate = new Date(this.snippet.publishedAt).toDateString();
-            var duration = utils.formatPeriodOfTime(this.contentDetails.duration);
-            var videoId = this.id;
-            var title = this.snippet.title;
-            var tags = this.snippet.tags.join(',');
-
-            var videoLi = $(utils.format(constants.VIDEO_LI_TEMPLATE, '', videoId, tags, title, uploadedDate, duration, thumbnailUrl));
+            var videoLi = $(utils.format(constants.VIDEO_CONTAINER_TEMPLATE, {
+              thumbnailUrl: this.snippet.thumbnails.high.url,
+              uploadedDate: new Date(this.snippet.publishedAt).toDateString(),
+              duration: utils.formatPeriodOfTime(this.contentDetails.duration),
+              title: this.snippet.title,
+              videoId: this.id
+            }));
+            videoLi.find('.submit-video-button').data('video', this);
             videoLi.appendTo('#existing-videos');
           });
         });
