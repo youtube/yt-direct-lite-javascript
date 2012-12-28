@@ -342,27 +342,22 @@ define([
     addPlaylist: function(name, isPrivate, callback) {
       lscache.remove(utils.format('{0}/feeds/api/users/default/playlists', constants.GDATA_SERVER));
 
-      var jsonBody = {
-        data: { title: name }
-      };
-
-      if (isPrivate) {
-        jsonBody.data.privacy = 'private';
-      }
-
-      $.ajax({
-        dataType: 'json',
-        type: 'POST',
-        url: utils.format('{0}/feeds/api/users/default/playlists?alt=jsonc', constants.GDATA_SERVER),
-        contentType: 'application/json',
-        headers: utils.generateYouTubeApiHeaders(),
-        processData: false,
-        data: JSON.stringify(jsonBody),
-        success: function(responseJson) {
-          callback(responseJson.data.id);
-        },
-        error: function(jqXHR) {
-          utils.showMessage(utils.format('Could not create playlist "{0}": {1}', name, jqXHR.responseText));
+      var request = gapi.client.youtube.playlists.insert({
+        part: 'snippet,status',
+        resource: {
+          snippet: {
+            title: name
+          },
+          status: {
+            privacyStatus: isPrivate ? 'private' : 'public'
+          }
+        }
+      });
+      request.execute(function(response) {
+        if ('error' in response) {
+          utils.showMessage('Could not create playlist. ' + utils.getErrorResponseString(response));
+        } else {
+          callback(response.id);
         }
       });
 
