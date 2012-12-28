@@ -23,7 +23,7 @@ define(['jquery', './utils', './constants', './config', './globals'], function($
             window.setTimeout(function() {
               gapi.auth.authorize({
                 client_id: config.OAUTH2_CLIENT_ID,
-                scope: [ constants.OAUTH2_SCOPE ],
+                scope: [constants.OAUTH2_SCOPE],
                 immediate: true
               }, auth.onAuthResult);
             }, 1);
