@@ -25,12 +25,12 @@ define(['jquery', '../utils', '../constants'], function($, utils, constants) {
       $('#switch').hide();
       $('#moderation-message').hide();
 
-      utils.getPlaylists(function(entries) {
+      utils.getPlaylists(function(playlists) {
         var lis = [];
-        $.each(entries, function(i, entry) {
+        $.each(playlists, function() {
           lis.push(utils.format(constants.PLAYLIST_LI_TEMPLATE, {
-            playlistId: entry['yt$playlistId']['$t'],
-            playlistName: entry['title']['$t']
+            playlistId: this.id,
+            playlistName: this.snippet.title
           }));
         });
         $('#playlists').html(lis.sort().join(''));

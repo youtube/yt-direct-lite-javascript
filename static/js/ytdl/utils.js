@@ -313,28 +313,27 @@ define([
     },
 
     getPlaylists: function(callback) {
-      utils.getFeed({
-        url: utils.format('{0}/feeds/api/users/default/playlists', constants.GDATA_SERVER),
-        cacheMinutes: constants.FEED_CACHE_MINUTES,
-        callback: function(entries) {
-          var entriesToReturn = [];
-          $.each(entries, function(i, entry) {
-            if (entry['title']['$t'] == constants.REJECTED_VIDEOS_PLAYLIST) {
-              globals.rejectedPlaylistId = entry['yt$playlistId']['$t'];
-            } else {
-              entriesToReturn.push(entry);
-            }
-          });
-
-          if (globals.rejectedPlaylistId) {
-            callback(entriesToReturn);
+      utils.getAllItems('playlists', {
+        part: 'id,snippet',
+        mine: true
+      }, function(playlists) {
+        var entriesToReturn = [];
+        $.each(playlists, function() {
+          if (this.snippet.title == constants.REJECTED_VIDEOS_PLAYLIST) {
+            globals.rejectedPlaylistId = this.id;
           } else {
-            utils.addPlaylist(constants.REJECTED_VIDEOS_PLAYLIST, true, function(playlistId) {
-              globals.rejectedPlaylistId = playlistId;
-
-              callback(entriesToReturn);
-            });
+            entriesToReturn.push(this);
           }
+        });
+
+        if (globals.rejectedPlaylistId) {
+          callback(entriesToReturn);
+        } else {
+          utils.addPlaylist(constants.REJECTED_VIDEOS_PLAYLIST, true, function(playlistId) {
+            globals.rejectedPlaylistId = playlistId;
+
+            callback(entriesToReturn);
+          });
         }
       });
     },
