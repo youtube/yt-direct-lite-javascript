@@ -384,28 +384,24 @@ define([
       lscache.remove(utils.format('{0}/feeds/api/users/default/playlists', constants.GDATA_SERVER));
       lscache.remove(playlistId);
 
-      var jsonBody = {
-        data: {
-          video: {
-            id: videoId,
-            position: 1
+      var request = gapi.client.youtube.playlistItems.insert({
+        part: 'snippet',
+        resource: {
+          snippet: {
+            playlistId: playlistId,
+            resourceId: {
+              kind: 'youtube#video',
+              videoId: videoId
+            },
+            position: 0
           }
         }
-      };
-
-      $.ajax({
-        dataType: 'json',
-        type: 'POST',
-        url: utils.format('{0}/feeds/api/playlists/{1}', constants.GDATA_SERVER, playlistId),
-        contentType: 'application/json',
-        headers: utils.generateYouTubeApiHeaders(),
-        processData: false,
-        data: JSON.stringify(jsonBody),
-        success: function() {
+      });
+      request.execute(function(response) {
+        if ('error' in response) {
+          utils.showMessage('Could not add video playlist. ' + utils.getErrorResponseString(response));
+        } else {
           utils.showMessage('Success!');
-        },
-        error: function(jqXHR) {
-          utils.showMessage(utils.format('Could not add video {0} to playlist: {1}', videoId, jqXHR.responseText));
         }
       });
     },
