@@ -51,9 +51,14 @@ define([
       }
 
       if (!$.support.cors) {
-        utils.showHtmlMessage('Unfortunately, your browser is <a target="_blank" href="http://caniuse.com/cors">not supported</a>. Please try visiting this page using a recent version of Firefox, Safari, Opera, or Chrome.');
-        window._gaq.push(['_trackPageview']);
-        return;
+        if (defaultTab == 'admin') {
+          utils.showHtmlMessage('Unfortunately, your browser is <a target="_blank" href="http://caniuse.com/cors">not supported</a>. Please try visiting this page using a recent version of Firefox, Safari, Opera, or Chrome.');
+          window._gaq.push(['_trackPageview']);
+          return;
+        } else {
+          defaultTab = 'existing';
+          $('#upload-panel').html('<p>Your browser does not <a target="_blank" href="http://caniuse.com/cors">meet the requirements</a> needed to upload a new video. Please choose one of the other options.</p>');
+        }
       }
 
       utils.updateHashParams();
