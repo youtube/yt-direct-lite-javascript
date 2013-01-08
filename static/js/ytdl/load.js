@@ -21,19 +21,19 @@ define([
   './utils',
   './config',
   './player',
+  'ytdl/panels/upload',
   'ytdl/panels/existing',
   'ytdl/panels/login',
   'ytdl/panels/logout',
   'ytdl/panels/postupload',
   'ytdl/panels/select',
-  'ytdl/panels/upload',
   'ytdl/panels/webcam',
   'ytdl/panels/admin',
   'ytdl/panels/embed-codes',
   'ytdl/panels/pending',
   'ytdl/panels/approved',
   'ytdl/panels/rejected'
-], function($, constants, globals, utils, config, player) {
+], function($, constants, globals, utils, config, player, upload) {
   return {
     onLoad: function(defaultTab) {
       window._gaq = window._gaq || [];
@@ -57,6 +57,8 @@ define([
           return;
         } else {
           defaultTab = 'existing';
+          delete upload.init;
+          delete upload.display;
           $('#upload-panel').html('<p>Your browser does not <a target="_blank" href="http://caniuse.com/cors">meet the requirements</a> needed to upload a new video. Please choose one of the other options.</p>');
         }
       }
