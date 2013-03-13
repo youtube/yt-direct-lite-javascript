@@ -60,10 +60,14 @@ define(['jquery', './utils', './constants', './config', './globals'], function($
         });
         request.execute(function(response) {
           if (utils.itemsInResponse(response)) {
-            lscache.set(constants.UPLOADS_LIST_ID_CACHE_KEY, response.items[0].contentDetails.relatedPlaylists.uploads);
-            lscache.set(constants.DISPLAY_NAME_CACHE_KEY, response.items[0].snippet.title);
-            lscache.set(constants.PROFILE_PICTURE_CACHE_KEY, response.items[0].snippet.thumbnails.default.url);
-            utils.redirect(nextState);
+            if (response.items[0].snippet.title != '') {
+              lscache.set(constants.UPLOADS_LIST_ID_CACHE_KEY, response.items[0].contentDetails.relatedPlaylists.uploads);
+              lscache.set(constants.DISPLAY_NAME_CACHE_KEY, response.items[0].snippet.title);
+              lscache.set(constants.PROFILE_PICTURE_CACHE_KEY, response.items[0].snippet.thumbnails.default.url);
+              utils.redirect(nextState);
+            } else {
+              utils.showHtmlMessage('Your account cannot upload videos. Please visit <a target="_blank" href="https://www.youtube.com/signin?next=/create_channel">https://www.youtube.com/signin?next=/create_channel</a> to add a YouTube channel to your account, and try again.');
+            }
           } else {
             utils.showMessage('Unable to retrieve channel info. ' + utils.getErrorResponseString(response));
           }
