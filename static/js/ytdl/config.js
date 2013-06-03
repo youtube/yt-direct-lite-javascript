@@ -16,7 +16,11 @@
 
 define({
   // REQUIRED
-  // See http://code.google.com/p/google-api-javascript-client/wiki/Authentication for instructions on registering for OAuth 2.
+  // See https://developers.google.com/api-client-library/javascript/features/authentication
+  // for instructions on registering for OAuth 2.
+  // After generating your OAuth 2 client id, you MUST then visit the "Services" tab of
+  // https://code.google.com/apis/console/ find the entry for "YouTube Data API v3"
+  // and flip it to "ON".
   OAUTH2_CLIENT_ID: '',
 
   // REQUIRED
