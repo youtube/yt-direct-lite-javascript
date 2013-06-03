@@ -305,7 +305,7 @@ define([
     },
 
     getPlaylistIdFromEditUrl: function(editUrl) {
-      var matches = /playlists\/(\w+)\//.exec(editUrl);
+      var matches = /playlists\/([^/]+)\//.exec(editUrl);
       if (matches.length > 1) {
         return matches[1];
       }
@@ -455,12 +455,13 @@ define([
           utils.getFeed({
             url: utils.format('{0}/feeds/api/playlists/{1}', constants.GDATA_SERVER, globals.rejectedPlaylistId),
             callback: function(rejectedPlaylistEntries) {
+              var allRejectedIds = [];
               var rejectedIds = [];
 
               $.each(rejectedPlaylistEntries, function() {
                 var rejectedId = this['media$group']['yt$videoid']['$t'];
                 if (!(rejectedId in videoIdToPlaylistEntryId)) {
-                  rejectedIds.push(rejectedId);
+                  allRejectedIds.push(rejectedId);
                   videoIdToPlaylistEntryId[rejectedId] = utils.getEditLinkUrlFromEntry(this);
                   videoIdToMetadata[rejectedId] = utils.getMetadataFromEntry(this);
                 }
@@ -476,6 +477,8 @@ define([
                     if (!(searchId in videoIdToPlaylistEntryId)) {
                       pendingIds.push(searchId);
                       videoIdToMetadata[searchId] = utils.getMetadataFromEntry(this);
+                    } else if ($.inArray(searchId, allRejectedIds) != -1) {
+                      rejectedIds.push(searchId);
                     }
                   });
 
