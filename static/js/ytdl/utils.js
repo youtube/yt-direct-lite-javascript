@@ -104,6 +104,7 @@ define([
       }
 
       var keyword = utils.format('{0}{1}', constants.DEFAULT_KEYWORD, playlistId);
+      keyword = keyword.replace(/\W/g, '');
       if (keyword.length > constants.MAX_KEYWORD_LENGTH) {
         keyword = keyword.substring(0, constants.MAX_KEYWORD_LENGTH);
       }
